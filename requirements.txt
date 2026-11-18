@@ -1,0 +1,14 @@
+# Requisitos para rodar CMAP_teoria_e_aplicacao.ipynb
+# Versoes do ambiente conda "cmap" (Python 3.12) em que o notebook foi executado
+numpy==2.4.4
+pandas==3.0.2
+matplotlib==3.10.8
+
+# Para abrir e executar o notebook
+jupyterlab==4.6.4
+ipykernel==7.4.0
+
+# Pacote functions/ (nao e usado pelo notebook; descomente se for usar)
+# scipy==1.17.1
+# rasterio==1.5.2
+# geopandas==1.2.0
