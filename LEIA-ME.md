@@ -1,69 +1,89 @@
-# CMAP com TerraClass — Pará
+# CMAP_FTL — Do pixel à trajetória
 
-Versão redesenhada do projeto: um modelo de cada classificador (MaxVer, RF, RF com contexto, CNN) treinado com o TerraClass 2008 e 2010 do Pará, aplicado às seis imagens da área de estudo (Belterra, 227/062, 2005–2010) e avaliado contra o TerraClass 2008 e 2010 da área de estudo.
+Contexto espacial e CMAP na classificação de trajetórias de cobertura na Amazônia. Projeto final do Space Tech Bootcamp 2026 (Future Tech Leaders Brasil).
 
-Plano completo: doc "Plano prático — CMAP com TerraClass no Pará" (https://claude.ai/artifact/USqbxe7ACWZxB96KR236jD).
+O projeto classifica as trajetórias de cobertura da terra de Belterra (PA), órbita-ponto 227/062, numa série anual Landsat 5 TM de 2005 a 2010, com o classificador de Máximo a Posteriori Composto (CMAP; Reis et al., 2020). As probabilidades de cada data vêm de quatro classificadores: máxima verossimilhança gaussiana (MaxVer), Random Forest (RF), RF com contexto 5 × 5 e uma rede neural convolucional (CNN) rasa com a mesma janela. Os classificadores são treinados com o TerraClass 2008 e 2010 de todo o Pará, sem nenhuma amostra da área de estudo, e avaliados contra o TerraClass 2008 e 2010 da área de estudo.
 
-## Regras da pasta
+**Pergunta de pesquisa:** o contexto espacial da CNN melhora, no CMAP, a acurácia das trajetórias e a detecção do desmatamento?
 
-- Tudo o que os notebooks daqui gravam fica em `resultados\<nome do notebook>\`.
-- `dados\` guarda só entradas baixadas (TerraClass e CSVs do GEE). Nenhum notebook grava em `dados\`.
-- Do projeto atual (`C:\cmap_ftl\`), os notebooks daqui só **leem** `dados_preparados\imagens\` (as seis imagens e máscaras da área de estudo). Nada é gravado fora de `terraclass\`.
-- `relatorio\` guarda o relatório técnico; ele não é saída de notebook.
-- **Antes de eu atualizar um notebook, feche a aba dele no VS Code sem salvar.** Uma aba aberta com a versão antiga, se salva, sobrescreve a nova (foi o que aconteceu com a v1 do 0a).
-- Notebooks com o mesmo nome dos atuais (`1_baselines` etc.) serão versões adaptadas; os originais em `C:\cmap_ftl\` não são alterados.
+**Classes:** Floresta (F), Vegetação Secundária (VS), Pastagem (PA) e Agricultura (AG). Só a volta para a Floresta (VS → F, PA → F, AG → F) é proibida; das 4.096 trajetórias possíveis em seis datas, 1.093 são válidas.
 
-## Estrutura
+## Conteúdo do repositório
+
+| Arquivo ou pasta | Conteúdo |
+|---|---|
+| `CMAP_teoria_e_aplicacao.ipynb` | Teoria do CMAP, com exemplo calculado à mão e aplicação numa cena fictícia |
+| `0a_aquisicao.ipynb` … `4_cmap.ipynb` | Pipeline do projeto (ordem de execução abaixo) |
+| `functions/` | Pacote Python com modelagem estatística, MaxVer, matrizes de transição e CMAP; usado pelo `4a_matrizes_transicao` e pelo `4_cmap` |
+| `apresentacao/` | Página da apresentação final (HTML estático para o GitHub Pages) |
+| `Proposta_FTL_Vinicius_Queiroz.pdf` | Proposta do projeto |
+| `requirements.txt` | Versões usadas no notebook de teoria |
+| `LICENSE` | Licença MIT |
+
+## Dados
+
+Os dados e os resultados não fazem parte do repositório. Os notebooks leem e gravam numa pasta de projeto externa, definida pelo parâmetro `PASTA_PROJETO` (no ambiente original, `C:\cmap_ftl\terraclass`):
 
 ```
-terraclass\
-  LEIA-ME.md
-  0a_aquisicao.ipynb               versão 2 (sorteio em qualquer posição + rótulo da vizinhança)
-  0b_conjunto_treino.ipynb         CSVs -> patches_9x9.npy + metadados (formato do 0_sample_design)
-  0c_referencia_terraclass.ipynb   TerraClass 2008 e 2010 na grade da área de estudo (referência da avaliação)
-  1_baselines.ipynb                MaxVer, RF e RF com contexto (5x5, 7x7, 9x9) nas divisões por órbita-ponto
-  2_treino_cnn.ipynb               CNN nas mesmas divisões; um experimento por tamanho de patch (5, 7, 9)
-  3_inferencia.ipynb               probabilidades dos 4 classificadores nas seis imagens da área de estudo
-  4a_matrizes_transicao.ipynb      matriz de validade 4x4 (só a volta para F é proibida), uma por par de datas
-  4_cmap.ipynb                     CMAP e data a data; avaliação contra o TerraClass 2008 e 2010
+<PASTA_PROJETO>\
   dados\
-    terraclass\                    entrada: TerraClass Pará 2008 e 2010 (GeoTIFF + .qml)
-    patches_csv\                   entrada: CSVs da v2, baixados da pasta cmap_terraclass_patches_v2 do Drive
-    patches_csv_v1_interior\       arquivo: 113 CSVs da v1 (interior 5x5), fora do treino principal
+    terraclass\        entrada: TerraClass Pará 2008 e 2010 (GeoTIFF + .qml)
+    patches_csv\       entrada: CSVs dos patches exportados pelo Google Earth Engine (etapa 0a)
   resultados\
-    0a_aquisicao\                  saídas do 0a (legenda, zona, cenas, conferência; tarefas e resumo da v2)
-      v1_interior\                 arquivo: notebook executado, tarefas, consumo, resumo e mapa da v1
-    0b_conjunto_treino\6bandas\    saídas do 0b (uma subpasta por NOME_CONJUNTO)
-    0b_conjunto_treino\6bandas_v1_270m\   arquivo: 1.ª execução do 0b (270 m também na mesma cena), com o notebook executado
-    0c_referencia_terraclass\      referência 2008/2010, pureza, bordas, transições, concordância com a dissertação
-    1_baselines\6bandas_experimento_inicial\   saídas do 1_baselines (uma subpasta por NOME_EXPERIMENTO)
-    2_treino_cnn\patch5\ (patch7\, patch9\)   saídas do 2_treino_cnn (uma subpasta por NOME_EXPERIMENTO)
-    3_inferencia\6bandas_patch5\   saídas do 3_inferencia (uma subpasta por NOME_INFERENCIA)
-    4a_matrizes_transicao\         matrizes de transição e tabela de trajetórias
-    4_cmap\6bandas_patch5\         CMAP, data a data, avaliação e figuras (uma subpasta por NOME_INFERENCIA)
-  relatorio\
-    relatorio_tecnico_cmap_terraclass.docx   relatório técnico (base para o artigo), atualizado a cada etapa
-    figuras\                       figuras do relatório
-    fonte\                         scripts que geram o relatório e as figuras
+    <nome do notebook>\<nome da variação>\   saídas de cada etapa
 ```
+
+Além disso, o pipeline usa as seis imagens Landsat 5 da área de estudo já preparadas (`landsat_AAAA.tif` e `mascara_AAAA.tif`; Collection 2, nível 2, seis bandas, grade EPSG:31981), que também não estão no repositório. O `0a` e o `0c` usam a imagem de 2010 para delimitar a área de estudo e definir a grade; o `3_inferencia` lê as seis datas.
+
+Regras seguidas por todos os notebooks:
+
+- cada notebook grava só em `resultados\<nome do notebook>\`;
+- nenhum notebook grava em `dados\`;
+- as imagens da área de estudo são apenas lidas.
+
+Para rodar em outro computador, ajuste nos parâmetros de cada notebook:
+
+- `PASTA_PROJETO`: pasta de dados e resultados;
+- `ARQ_IMAGEM_AREA`, `ARQ_MASCARA_AREA` (`0a`), `ARQ_GRADE` (`0c`) e `PASTA_IMAGENS` (`3_inferencia`): caminho das imagens da área de estudo;
+- `PASTA_REPO` (`4a_matrizes_transicao` e `4_cmap`): caminho deste repositório, de onde é importado o pacote `functions`.
 
 ## Ordem de execução
 
-| # | Notebook | Situação | O que faz | Grava em |
-|---|---|---|---|---|
-| 1 | `0a_aquisicao` | v2 executada (v1 arquivada) | Patches de treino pelo GEE (CSV) | `resultados\0a_aquisicao\` |
-| 2 | `0b_conjunto_treino` | executado (6bandas: 100.643 patches; 1.ª execução arquivada) | CSVs → patches 9×9, escala fixa, folds por órbita-ponto | `resultados\0b_conjunto_treino\<NOME_CONJUNTO>\` |
-| 3 | `0c_referencia_terraclass` | executado (comparação com a dissertação desligada de propósito: `COMPARAR_DISSERTACAO = False`) | TerraClass 2008 e 2010 na grade da área de estudo | `resultados\0c_referencia_terraclass\` |
-| 4 | `1_baselines` | executado (6bandas_experimento_inicial, ~9 min) | MaxVer, RF e RF com contexto | `resultados\1_baselines\<NOME_EXPERIMENTO>\` |
-| 5 | `2_treino_cnn` | patch5 executado; patch7 e patch9 a rodar (só a repetição 0) | CNN | `resultados\2_treino_cnn\<NOME_EXPERIMENTO>\` |
-| 6 | `3_inferencia` | executado (6bandas_patch5, ~13 min) | Probabilidades nas seis imagens | `resultados\3_inferencia\<NOME_INFERENCIA>\` |
-| 7 | `4a_matrizes_transicao` | pronto (segundos) | Matriz 4×4 (só a volta para F é proibida) | `resultados\4a_matrizes_transicao\` |
-| 8 | `4_cmap` | pronto (rodar depois do 4a; ~2 min) | CMAP e avaliação contra o TerraClass | `resultados\4_cmap\<NOME_INFERENCIA>\` |
+| # | Notebook | O que faz | Grava em `resultados\` |
+|---|---|---|---|
+| 1 | `0a_aquisicao` | Sorteia e exporta os patches de treino pelo Google Earth Engine (CSV) | `0a_aquisicao\` |
+| 2 | `0b_conjunto_treino` | CSVs → patches 9 × 9, escala fixa e divisões por órbita-ponto | `0b_conjunto_treino\<NOME_CONJUNTO>\` |
+| 3 | `0c_referencia_terraclass` | TerraClass 2008 e 2010 na grade da área de estudo (referência da avaliação) | `0c_referencia_terraclass\` |
+| 4 | `1_baselines` | MaxVer, RF e RF com contexto (5 × 5, 7 × 7 e 9 × 9), validação cruzada por órbita-ponto | `1_baselines\<NOME_EXPERIMENTO>\` |
+| 5 | `2_treino_cnn` | CNN nas mesmas divisões; um experimento por tamanho de patch (`TAMANHO_PATCH` = 5, 7 ou 9) | `2_treino_cnn\<NOME_EXPERIMENTO>\` |
+| 6 | `3_inferencia` | Probabilidades dos quatro classificadores nas seis imagens da área de estudo | `3_inferencia\<NOME_INFERENCIA>\` |
+| 7 | `4a_matrizes_transicao` | Matriz de validade 4 × 4, uma por par de datas | `4a_matrizes_transicao\` |
+| 8 | `4_cmap` | CMAP e classificação data a data, avaliação contra o TerraClass 2008 e 2010 e confiança das trajetórias | `4_cmap\<NOME_INFERENCIA>\` |
 
-Os notebooks pendentes entram nesta pasta à medida que forem escritos.
+Cada variação (conjunto de bandas, experimento, tamanho de patch) ganha um nome próprio e fica numa subpasta separada. O `3_inferencia` combina um experimento do `1_baselines` com um do `2_treino_cnn`, e o `4_cmap` lê o resultado pelo `NOME_INFERENCIA`. Os resultados apresentados usam `NOME_CONJUNTO = "6bandas"`, `NOME_EXPERIMENTO = "patch5"` e `NOME_INFERENCIA = "6bandas_patch5"`.
+
+No ambiente original (Intel i7-11700, 16 GB de RAM, sem GPU), o `1_baselines` levou cerca de 9 min, o `3_inferencia` cerca de 13 min, o `4a_matrizes_transicao` alguns segundos e o `4_cmap` cerca de 2 min.
 
 ## Antes de rodar o 0a_aquisicao
 
-1. Baixar o TerraClass do Pará, 2008 e 2010, formato Matricial (Raster), em terraclass.gov.br → Downloads → Amazônia → Unidade da Federação: Pará. Extrair em `dados\terraclass\`; o nome de cada arquivo precisa conter o ano, e o `.qml` fica junto do GeoTIFF.
-2. Registrar um projeto do Google Cloud no Earth Engine para uso não comercial e instalar `earthengine-api` no ambiente `cmap` (`conda install -c conda-forge earthengine-api`). Preencher `PROJETO_GEE` no notebook.
-3. Rodar a seção 1 (mostra a legenda e o no-data) e só então subir os dois GeoTIFF ao GEE como assets `terraclass_pa_2008` e `terraclass_pa_2010`, com Pyramiding policy = MODE e o no-data informado.
+1. Baixe o TerraClass do Pará, 2008 e 2010, em formato matricial (raster), em terraclass.gov.br → Downloads → Amazônia → Unidade da Federação: Pará. Extraia em `dados\terraclass\`; o nome de cada arquivo precisa conter o ano, e o `.qml` fica junto do GeoTIFF.
+2. Registre um projeto do Google Cloud no Earth Engine para uso não comercial e instale o `earthengine-api` no ambiente (`conda install -c conda-forge earthengine-api`). Preencha `PROJETO_GEE` no notebook.
+3. Rode a seção 1 (mostra a legenda e o no-data) e só então suba os dois GeoTIFF ao GEE como assets `terraclass_pa_2008` e `terraclass_pa_2010`, com Pyramiding policy = MODE e o no-data informado.
+
+## Dependências
+
+Ambiente conda com Python 3.12. O pipeline usa `numpy`, `pandas`, `matplotlib`, `scipy`, `rasterio`, `scikit-learn`, `torch` (PyTorch) e, só no `0a`, `earthengine-api`. O `requirements.txt` fixa apenas as versões do notebook de teoria.
+
+## Apresentação
+
+A pasta `apresentacao/` contém a página final (`index.html`, `dados/` e `img/`). Com o GitHub Pages ativado para a branch `main` na raiz do repositório, ela fica em `https://vdlucas-queiroz.github.io/CMAP_FTL/apresentacao/`. Para abrir localmente, rode `python -m http.server 8000` dentro de `apresentacao/` e acesse `http://localhost:8000`; aberta direto do disco, a página não carrega o explorador de pixels.
+
+## Referências
+
+- REIS, M. S.; DUTRA, L. V.; ESCADA, M. I. S.; SANT'ANNA, S. J. S. Avoiding invalid transitions in land cover trajectory classification with a compound maximum a posteriori approach. *IEEE Access*, v. 8, p. 98787–98799, 2020. doi:10.1109/ACCESS.2020.2997019.
+- INPE; EMBRAPA. *TerraClass Amazônia*: mapas de uso e cobertura da terra de 2008 e 2010. terraclass.gov.br.
+- U.S. GEOLOGICAL SURVEY. *Landsat 4–5 TM Collection 2 Level-2 Science Products*.
+
+## Licença
+
+MIT. Veja `LICENSE`.
