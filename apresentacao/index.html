@@ -398,6 +398,45 @@ mtd{text-align:left;padding:2px .5em}
 .def p{margin:0;font-size:.9rem;line-height:1.5;color:var(--ink-2)}
 .def q{font-style:italic}
 
+
+/* fluxo de trabalho (metodologia) */
+.sub-met{font-size:1rem;margin:0 0 20px}
+.fluxo{list-style:none;margin:0;padding:0}
+.fluxo > li{display:grid;grid-template-columns:34px 190px minmax(0,1fr);column-gap:20px;position:relative;padding-bottom:30px}
+.fluxo > li:last-child{padding-bottom:0}
+.fluxo > li::before{content:"";position:absolute;left:16px;top:40px;bottom:6px;width:2px;border-radius:2px;background:var(--line-2)}
+.fluxo > li:last-child::before{display:none}
+.fx-no{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);background:var(--bg);display:grid;place-items:center;font:600 .82rem var(--f-mono)}
+.fx-cab h4{font:600 1.02rem/1.3 var(--f-display);color:var(--ink);margin:6px 0 4px}
+.fx-nb{font:500 .7rem/1.4 var(--f-mono);color:var(--muted);letter-spacing:.03em}
+.fx-corpo{min-width:0;padding-top:6px}
+.fx-itens{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 26px;align-content:start}
+.fx-itens li{font-size:.88rem;line-height:1.45;color:var(--ink-2);padding-left:14px;position:relative}
+.fx-itens li::before{content:"";position:absolute;left:0;top:.58em;width:5px;height:5px;border-radius:50%;background:var(--line-2)}
+.fx-duas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fx-caixa{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px 12px;display:flex;flex-direction:column}
+.fx-caixa .fx-itens{grid-template-columns:minmax(0,1fr)}
+.fx-rot{font:500 .72rem var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px}
+.fx-caixa .fx-itens{margin-bottom:14px}
+.fx-res{margin-top:auto;padding-top:9px;border-top:1px dashed var(--line-2);font:600 .8rem var(--f-mono);color:var(--ink)}
+@media (max-width:1000px){.fluxo > li{grid-template-columns:34px minmax(0,1fr)}.fx-cab,.fx-corpo{grid-column:2}.fx-cab h4{margin-top:6px}.fx-corpo{padding-top:10px}}
+@media (max-width:640px){.fx-itens,.fx-duas{grid-template-columns:minmax(0,1fr)}.fluxo > li{column-gap:14px}}
+
+/* trajetória x transição (seção 01) */
+.tt{margin:0 0 22px;padding:16px 18px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.tt-g{display:grid;grid-template-columns:86px repeat(6,minmax(0,44px));grid-template-rows:auto auto 10px auto auto;column-gap:9px;row-gap:5px;align-items:center}
+.tt-g .sq{position:relative;z-index:1;font-size:.72rem}
+.tt-rot{font:600 .72rem var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink)}
+.tt-rot.ac{color:var(--accent)}
+.tt-caixa{align-self:stretch;margin:-5px;border:1.5px solid var(--ink-2);border-radius:10px}
+.tt-caixa.ac{border-color:var(--accent);background:var(--accent-2)}
+.tt-seta{z-index:2;justify-self:center;font:700 .9rem/1 var(--f-text);color:var(--accent);background:var(--accent-2);padding:2px 1px;border-radius:4px}
+.tt-ano{font:500 .68rem var(--f-mono);color:var(--muted);text-align:center}
+.tt-leg{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:.84rem;line-height:1.45;color:var(--ink-2)}
+.tt-leg p{margin:0 0 4px}
+.tt-leg b{color:var(--ink)}
+.tt-leg b.ac{color:var(--accent)}
+@media (max-width:520px){.tt{padding:14px 12px}.tt-g{grid-template-columns:70px repeat(6,minmax(0,1fr));column-gap:6px}.tt-rot{font-size:.62rem;letter-spacing:.03em}}
 </style>
 </head>
 <body>
@@ -453,7 +492,7 @@ mtd{text-align:left;padding:2px .5em}
 <!-- 1. TRAJETÓRIAS -->
 <section class="sec" id="trajetorias">
   <div class="wrap">
-    <div class="sec-cab"><div class="rotulo"><span class="n">01</span></div><h2>Trajetórias de cobertura</h2></div>
+    <div class="sec-cab"><div class="rotulo"><span class="n">01</span></div><h2>Trajetórias de cobertura da terra</h2></div>
     <div class="dois recuo">
       <div class="texto">
         <p>Uma série de imagens de satélite permite acompanhar as mudanças de uso e cobertura da terra ao longo do tempo. A sequência de classes de cobertura de um pixel, data a data, é a sua <strong>trajetória</strong>; a mudança entre duas datas é uma <strong>transição</strong>. Com quatro classes e seis datas, existem 4<sup>6</sup> = 4.096 trajetórias possíveis para cada pixel.</p>
@@ -466,6 +505,32 @@ mtd{text-align:left;padding:2px .5em}
         </div>
       </div>
       <div>
+        <figure class="tt" aria-label="Diferença entre trajetória e transição">
+          <div class="tt-g">
+            <div class="tt-rot" style="grid-row:1;grid-column:1">Trajetória</div>
+            <div class="tt-caixa" style="grid-row:1;grid-column:2/8" aria-hidden="true"></div>
+            <span class="sq c1" style="grid-row:1;grid-column:2">F</span>
+            <span class="sq c1" style="grid-row:1;grid-column:3">F</span>
+            <span class="sq c1" style="grid-row:1;grid-column:4">F</span>
+            <span class="sq c1" style="grid-row:1;grid-column:5">F</span>
+            <span class="sq c4" style="grid-row:1;grid-column:6">AG</span>
+            <span class="sq c4" style="grid-row:1;grid-column:7">AG</span>
+            <span class="tt-ano" style="grid-row:2;grid-column:2">2005</span>
+            <span class="tt-ano" style="grid-row:2;grid-column:3">2006</span>
+            <span class="tt-ano" style="grid-row:2;grid-column:4">2007</span>
+            <span class="tt-ano" style="grid-row:2;grid-column:5">2008</span>
+            <span class="tt-ano" style="grid-row:2;grid-column:6">2009</span>
+            <span class="tt-ano" style="grid-row:2;grid-column:7">2010</span>
+            <div class="tt-rot ac" style="grid-row:4;grid-column:1">Transição</div>
+            <div class="tt-caixa ac" style="grid-row:4;grid-column:5/7" aria-hidden="true"></div>
+            <span class="sq c1" style="grid-row:4;grid-column:5">F</span>
+            <span class="sq c4" style="grid-row:4;grid-column:6">AG</span>
+            <span class="tt-seta" style="grid-row:4;grid-column:5/7" aria-hidden="true">→</span>
+            <span class="tt-ano" style="grid-row:5;grid-column:5">2008</span>
+            <span class="tt-ano" style="grid-row:5;grid-column:6">2009</span>
+          </div>
+          <figcaption class="tt-leg"><p><b>Trajetória:</b> a sequência de classes de um pixel em todas as datas.</p><p><b class="ac">Transição:</b> a mudança entre duas datas seguidas; aqui, de Floresta para Agricultura entre 2008 e 2009.</p></figcaption>
+        </figure>
         <figure class="pixel-card" style="margin:0" aria-labelledby="pc-tit">
           <div class="cab"><h3 id="pc-tit">Um pixel de Belterra, 2005–2010</h3><span class="rotulo">linha 916 · coluna 408</span></div>
           <div class="seis" id="pixel-seis"></div>
@@ -489,6 +554,7 @@ mtd{text-align:left;padding:2px .5em}
           <div class="matriz-eixo">Matriz de transições · de (t−1) ↓ para (t) →</div>
           <div class="matriz" id="matriz"></div>
         </div>
+        <p style="margin-top:26px">Outro problema está nas amostras. Classificar trajetórias exige conhecer a classe de cada data, mas amostras que acompanhem o mesmo lugar ao longo de toda a série são difíceis de obter quando a paisagem muda muito; em geral, as amostras são coletadas por data.</p>
       </div>
       <div>
         <div class="painel"><div class="rotulo" style="margin-bottom:6px">Comparação pós-classificação</div><div class="pilha-fig" id="pilha"></div></div>
@@ -607,6 +673,77 @@ mtd{text-align:left;padding:2px .5em}
   <div class="wrap">
     <div class="sec-cab"><div class="rotulo"><span class="n">07</span></div><h2>Metodologia</h2></div>
     <div class="recuo">
+      <h3 class="sub-met">Fluxo de trabalho</h3>
+      <ol class="fluxo">
+        <li>
+          <span class="fx-no">1</span>
+          <div class="fx-cab"><h4>Pré-processamento</h4><div class="fx-nb">notebooks 0a · 0b · 0c</div></div>
+          <div class="fx-corpo">
+            <div class="fx-duas">
+              <div class="fx-caixa">
+                <div class="fx-rot">Treino · Pará</div>
+                <ul class="fx-itens">
+                  <li>TerraClass 2008 e 2010 convertido para F, VS, PA e AG</li>
+                  <li>113 cenas Landsat 5 de junho a setembro, sem a cena 227/062 e 10 km em volta da área de estudo</li>
+                  <li>Sorteio estratificado no Google Earth Engine: até 300 pixels por classe e cena, janela 9&nbsp;×&nbsp;9 sem pixels mascarados</li>
+                  <li>Remoção de patches vizinhos e de sobreposições entre cenas</li>
+                  <li>Reflectância padronizada com uma única escala para todas as cenas</li>
+                  <li>5 grupos de validação cruzada por órbita-ponto</li>
+                </ul>
+                <div class="fx-res">100.643 patches de 9&nbsp;×&nbsp;9 pixels</div>
+              </div>
+              <div class="fx-caixa">
+                <div class="fx-rot">Teste · Belterra</div>
+                <ul class="fx-itens">
+                  <li>Seis imagens Landsat 5, de 2005 a 2010, seis bandas, sem reamostragem</li>
+                  <li>Máscara de nuvem, sombra e saturação</li>
+                  <li>Mesma escala radiométrica do treino</li>
+                  <li>TerraClass 2008 e 2010 levado à grade de 30 m (classe majoritária)</li>
+                </ul>
+                <div class="fx-res">750&nbsp;×&nbsp;1.200 pixels de 30 m · 6&nbsp;datas</div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="fx-no">2</span>
+          <div class="fx-cab"><h4>Classificação</h4><div class="fx-nb">notebooks 1 · 2 · 3</div></div>
+          <div class="fx-corpo">
+            <ul class="fx-itens">
+              <li>MaxVer, RF, RF com contexto 5&nbsp;×&nbsp;5 e CNN&nbsp;5&nbsp;×&nbsp;5</li>
+              <li>Validação cruzada no Pará: 5 divisões por órbita-ponto</li>
+              <li>CNN: perda ponderada, aumento de dados e parada antecipada</li>
+              <li>Calibração por temperatura quando reduz a NLL</li>
+              <li>Probabilidade de cada data em Belterra: média dos 5 modelos</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <span class="fx-no">3</span>
+          <div class="fx-cab"><h4>Trajetórias</h4><div class="fx-nb">notebooks 4a · 4</div></div>
+          <div class="fx-corpo">
+            <ul class="fx-itens">
+              <li>Matriz de validade: só a volta para a Floresta é proibida</li>
+              <li>1.093 das 4.096 trajetórias são válidas</li>
+              <li>Data a data e CMAP a partir das mesmas probabilidades</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <span class="fx-no">4</span>
+          <div class="fx-cab"><h4>Avaliação</h4><div class="fx-nb">notebook 4</div></div>
+          <div class="fx-corpo">
+            <ul class="fx-itens">
+              <li>Referência: TerraClass 2008 e 2010 em todos os pixels da área de estudo</li>
+              <li>Acurácia global, balanceada, do produtor e do usuário</li>
+              <li>Trajetórias inválidas e mudanças entre 2008 e 2010</li>
+              <li>Intervalos de 95% por bootstrap em blocos de 1,5 km</li>
+              <li>Confiança de cada trajetória (probabilidade a posteriori)</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <h3 class="sub-met" style="margin-top:56px">Classificadores</h3>
       <div class="clfs">
         <div class="clf"><div class="jan" data-n="1"></div><div class="tipo">Paramétrico · pixel</div><h3>MaxVer</h3><p>Máxima verossimilhança gaussiana: uma normal multivariada por classe, no pixel central. É o classificador do CMAP original.</p></div>
         <div class="clf"><div class="jan" data-n="1"></div><div class="tipo">Não paramétrico · pixel</div><h3>RF</h3><p>Random Forest com 200 árvores no pixel central. A probabilidade é a fração das árvores que votam em cada classe.</p></div>
@@ -617,7 +754,6 @@ mtd{text-align:left;padding:2px .5em}
         <div class="texto">
           <p>Cada classificador tem um único modelo para as duas datas de treino e todas as cenas, aplicado às seis imagens de Belterra. A probabilidade de cada pixel é a média dos cinco modelos da validação cruzada; a versão (bruta ou calibrada por temperatura; Guo et al., 2017) é a de menor log-verossimilhança negativa nos folds do Pará. Classes equiprováveis no treino tornam as saídas proporcionais às verossimilhanças que o CMAP recebe.</p>
           <p><strong>Por que uma rede rasa?</strong> É o modelo mínimo que aprende filtros espaciais; redes leves aplicadas a patches já foram usadas no mapeamento com Landsat (Song et al., 2019). Com a mesma janela de 5 × 5 pixels, a comparação com o RF com contexto isola uma única diferença: o contexto é aprendido pela rede ou resumido em média e desvio-padrão.</p>
-          <p><strong>Avaliação.</strong> Classificação data a data (classe mais provável de cada data) e CMAP, a partir das mesmas probabilidades, comparadas ao TerraClass 2008 e 2010 em todos os pixels da legenda: acurácia global e balanceada, trajetórias inválidas e mudanças entre 2008 e 2010. Intervalos de 95% por bootstrap em blocos de 1,5 km.</p>
         </div>
         <div>
           <h3 style="font-size:1rem;margin-bottom:4px">Validação cruzada no Pará</h3>
