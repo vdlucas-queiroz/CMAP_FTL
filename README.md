@@ -19,7 +19,7 @@ O projeto classifica as trajetórias de cobertura da terra de Belterra (PA), ór
 | `0a_aquisicao.ipynb` … `4_cmap.ipynb` | Pipeline do projeto (ordem de execução abaixo) |
 | `functions/` | Pacote Python com modelagem estatística, MaxVer, matrizes de transição e CMAP; usado pelo `4a_matrizes_transicao` e pelo `4_cmap` |
 | `Proposta_FTL_Vinicius_Queiroz.pdf` | Proposta do projeto |
-| `requirements.txt` | Versões usadas no notebook de teoria |
+| `requirements.txt` | Versões dos pacotes usados nos notebooks e no pacote `functions/` |
 | `LICENSE` | Licença MIT |
 
 ## Dados
@@ -74,7 +74,7 @@ No ambiente original (Intel i7-11700, 16 GB de RAM, sem GPU), o `1_baselines` le
 
 ## Dependências
 
-Ambiente conda com Python 3.12. O pipeline usa `numpy`, `pandas`, `matplotlib`, `scipy`, `rasterio`, `scikit-learn`, `torch` (PyTorch) e, só no `0a`, `earthengine-api`. O `requirements.txt` fixa apenas as versões do notebook de teoria.
+Ambiente conda com Python 3.12. As versões usadas estão em `requirements.txt` (`pip install -r requirements.txt`): `numpy`, `pandas`, `matplotlib`, `scipy`, `rasterio`, `geopandas` (importado pelo pacote `functions`), `scikit-learn`, `torch` (PyTorch, executado em CPU) e, só no `0a`, `earthengine-api`.
 
 ## Apresentação
 

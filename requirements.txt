@@ -1,14 +1,25 @@
-# Requisitos para rodar CMAP_teoria_e_aplicacao.ipynb
-# Versoes do ambiente conda "cmap" (Python 3.12) em que o notebook foi executado
+# Requisitos do projeto CMAP_FTL (notebooks 0a a 4_cmap, CMAP_teoria_e_aplicacao e pacote functions/)
+# Versoes do ambiente conda "cmap" (Python 3.12) em que os notebooks foram executados.
+# Instalacao: pip install -r requirements.txt
+
+# Base: todos os notebooks e o pacote functions/
 numpy==2.4.4
 pandas==3.0.2
 matplotlib==3.10.8
+scipy==1.17.1
 
-# Para abrir e executar o notebook
+# Dados geoespaciais: 0a, 0c, 3_inferencia, 4a, 4_cmap e functions/
+rasterio==1.5.2
+geopandas==1.2.0        # importado pelo pacote functions/ (modulo sampling), carregado pelo 4a e pelo 4_cmap
+
+# Classificadores
+scikit-learn==1.9.1     # MaxVer, RF e RF com contexto: 1_baselines e 3_inferencia
+torch==2.14.1           # CNN: 2_treino_cnn e 3_inferencia. Todo o processamento foi feito em CPU;
+                        # para escolher a versao (CPU ou GPU) da sua maquina, veja pytorch.org
+
+# Aquisicao dos patches no Google Earth Engine: so o 0a_aquisicao
+earthengine-api==1.7.53
+
+# Para abrir e executar os notebooks
 jupyterlab==4.6.4
 ipykernel==7.4.0
-
-# Pacote functions/ (nao e usado pelo notebook; descomente se for usar)
-# scipy==1.17.1
-# rasterio==1.5.2
-# geopandas==1.2.0
