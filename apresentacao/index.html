@@ -495,7 +495,7 @@ mtd{text-align:left;padding:2px .5em}
     <div class="sec-cab"><div class="rotulo"><span class="n">01</span></div><h2>Trajetórias de cobertura da terra</h2></div>
     <div class="dois recuo">
       <div class="texto">
-        <p>Uma série de imagens de satélite permite acompanhar as mudanças de uso e cobertura da terra ao longo do tempo. A sequência de classes de cobertura de um pixel, data a data, é a sua <strong>trajetória</strong>; a mudança entre duas datas é uma <strong>transição</strong>. Com quatro classes e seis datas, existem 4<sup>6</sup> = 4.096 trajetórias possíveis para cada pixel.</p>
+        <p>Uma série de imagens de satélite permite acompanhar as mudanças de uso e cobertura da terra ao longo do tempo. A sequência de classes de cobertura de um pixel, data a data, é a sua <strong>trajetória</strong>. A mudança entre duas datas é uma <strong>transição</strong>. Com quatro classes e seis datas, existem 4<sup>6</sup> = 4.096 trajetórias possíveis para cada pixel.</p>
         <p>As classes seguem o TerraClass Amazônia, a referência usada no treino e na avaliação:</p>
         <div class="defs">
           <div class="def"><span class="sq c1">F</span><div><b>Floresta (F)</b><p>Vegetação natural florestal primária, sem registro de desmatamento. No TerraClass, a classe vem do mapeamento do PRODES, que considera apenas o desmatamento da floresta primária (Neves et al., 2020).</p></div></div>
@@ -529,12 +529,12 @@ mtd{text-align:left;padding:2px .5em}
             <span class="tt-ano" style="grid-row:5;grid-column:5">2008</span>
             <span class="tt-ano" style="grid-row:5;grid-column:6">2009</span>
           </div>
-          <figcaption class="tt-leg"><p><b>Trajetória:</b> a sequência de classes de um pixel em todas as datas.</p><p><b class="ac">Transição:</b> a mudança entre duas datas seguidas; aqui, de Floresta para Agricultura entre 2008 e 2009.</p></figcaption>
+          <figcaption class="tt-leg"><p><b>Trajetória:</b> a sequência de classes de um pixel em todas as datas.</p><p><b class="ac">Transição:</b> a mudança entre duas datas seguidas. Aqui, de Floresta para Agricultura entre 2008 e 2009.</p></figcaption>
         </figure>
         <figure class="pixel-card" style="margin:0" aria-labelledby="pc-tit">
           <div class="cab"><h3 id="pc-tit">Um pixel de Belterra, 2005–2010</h3><span class="rotulo">linha 916 · coluna 408</span></div>
           <div class="seis" id="pixel-seis"></div>
-          <figcaption class="nota">Floresta até 2008, Agricultura a partir de 2009 (imagens em falsa-cor; a área aberta aparece em magenta). Data a data, a CNN chama 2007 de Vegetação Secundária (51% contra 42% de Floresta) e <b style="color:var(--invalid)">volta para Floresta em 2008</b>, uma transição impossível. O CMAP corrige 2007, e a trajetória concorda com o TerraClass nas duas datas de referência.</figcaption>
+          <figcaption class="nota">Floresta até 2008, Agricultura a partir de 2009 (imagens em falsa-cor e a área aberta aparece em magenta). Data a data, a CNN chama 2007 de Vegetação Secundária (51% contra 42% de Floresta) e <b style="color:var(--invalid)">volta para Floresta em 2008</b>, uma transição impossível. O CMAP corrige 2007, e a trajetória concorda com o TerraClass nas duas datas de referência.</figcaption>
         </figure>
       </div>
     </div>
@@ -548,13 +548,13 @@ mtd{text-align:left;padding:2px .5em}
     <div class="dois recuo">
       <div class="texto">
         <p>Na <strong>comparação pós-classificação</strong>, cada imagem é classificada à parte e os mapas são empilhados. A qualidade da trajetória depende da classificação de cada data, os erros de todas as datas se somam e a correção só acontece no fim do processo.</p>
-        <p>Como a Vegetação Secundária é, por definição, a floresta que já sofreu corte raso, um pixel que deixou de ser Floresta não volta a ser Floresta. Por isso, <strong>VS → F, PA → F e AG → F são transições proibidas</strong>; todas as outras são permitidas. Das 4.096 trajetórias possíveis, <strong>1.093 (26,7%) são válidas</strong>: a que fica em Floresta nas seis datas e as que saem da Floresta em algum ano e não voltam.</p>
+        <p>Como a Vegetação Secundária é, por definição, a floresta que já sofreu corte raso, um pixel que deixou de ser Floresta não volta a ser Floresta. Por isso, <strong>VS → F, PA → F e AG → F são transições proibidas</strong> e todas as outras são permitidas. Das 4.096 trajetórias possíveis, <strong>1.093 (26,7%) são válidas</strong>: a que fica em Floresta nas seis datas e as que saem da Floresta em algum ano e não voltam.</p>
         
         <div style="margin-top:26px">
           <div class="matriz-eixo">Matriz de transições · de (t−1) ↓ para (t) →</div>
           <div class="matriz" id="matriz"></div>
         </div>
-        <p style="margin-top:26px">Outro problema está nas amostras. Classificar trajetórias exige conhecer a classe de cada data, mas amostras que acompanhem o mesmo lugar ao longo de toda a série são difíceis de obter quando a paisagem muda muito; em geral, as amostras são coletadas por data.</p>
+        <p style="margin-top:26px">Outro problema está nas amostras. Classificar trajetórias exige conhecer a classe de cada data, mas amostras que acompanhem o mesmo lugar ao longo de toda a série são difíceis de obter quando a paisagem muda muito. Em geral, as amostras são coletadas por data.</p>
       </div>
       <div>
         <div class="painel"><div class="rotulo" style="margin-bottom:6px">Comparação pós-classificação</div><div class="pilha-fig" id="pilha"></div></div>
@@ -616,10 +616,11 @@ mtd{text-align:left;padding:2px .5em}
       </div>
       <h3 style="margin:44px 0 6px">Literatura</h3>
       <div class="lacuna">
-        <div><div class="ref">Reis et al. (2020)</div><b>CMAP com MaxVer</b><span>Proposta do CMAP, na mesma série Landsat 5 de Belterra; eliminou as trajetórias inválidas e aumentou o kappa e a acurácia global em relação ao MaxVer.</span></div>
+        <div><div class="ref">Reis et al. (2020)</div><b>CMAP com MaxVer</b><span>Proposta do CMAP, na mesma série Landsat 5 de Belterra. Eliminou as trajetórias inválidas e aumentou o kappa e a acurácia global em relação ao MaxVer.</span></div>
         <div><div class="ref">Queiroz (2024)</div><b>CMAP multissensor</b><span>Séries Landsat 5 e ALOS/PALSAR, com distribuições próprias para dados de radar.</span></div>
         <div><div class="ref">Dutra et al. (2023)</div><b>CMAP não paramétrico</b><span>Conjunto de árvores de decisão como fonte das probabilidades, com cinco imagens Landsat de Itaituba (PA).</span></div>
         <div><div class="ref">Quevedo et al. (2024)</div><b>RF-CMAP</b><span>Probabilidades de Random Forest no CMAP, numa área afetada por deslizamentos.</span></div>
+        <div><div class="ref">Reis et al. (2026)</div><b>CMAP Model Generalizaton</b><span>Generalização do modelo CMAP treinado com poucas datas para séries extensas.</span></div>
       </div>
     </div>
   </div>
@@ -660,7 +661,7 @@ mtd{text-align:left;padding:2px .5em}
             <div class="empilhada" id="emp-treino" role="img" aria-label="Patches por classe"></div><div class="emp-leg" id="emp-treino-leg"></div></dd></div>
           <div><dt>Teste</dt><dd><b>Belterra (PA)</b>, órbita-ponto 227/062: 750 × 1.200 pixels de 30 m (22,5 × 36 km), uma imagem por ano.
             <div class="datas"><span>01/07/2005</span><span>21/08/2006</span><span>21/06/2007</span><span>23/06/2008</span><span>12/07/2009</span><span>29/06/2010</span></div></dd></div>
-          <div><dt>Referência</dt><dd>TerraClass 2008 e 2010 na área de estudo, usado só na avaliação. Em 2008, 73,0% de Floresta, 9,9% de VS, 13,5% de Pastagem e 3,5% de Agricultura; 2,65% dos pixels mudaram de classe até 2010.</dd></div>
+          <div><dt>Referência</dt><dd>TerraClass 2008 e 2010 na área de estudo, usado só na avaliação. Em 2008, 73,0% de Floresta, 9,9% de VS, 13,5% de Pastagem e 3,5% de Agricultura. 2,65% dos pixels mudaram de classe até 2010.</dd></div>
         </dl>
         <p class="aviso">Em relação à proposta, o treino passou a usar o TerraClass de todo o Pará, e não as amostras de campo de Reis et al. (2020). Nenhuma amostra de treino vem da área de estudo.</p>
       </div>
@@ -752,8 +753,8 @@ mtd{text-align:left;padding:2px .5em}
       </div>
       <div class="dois" style="margin-top:44px">
         <div class="texto">
-          <p>Cada classificador tem um único modelo para as duas datas de treino e todas as cenas, aplicado às seis imagens de Belterra. A probabilidade de cada pixel é a média dos cinco modelos da validação cruzada; a versão (bruta ou calibrada por temperatura; Guo et al., 2017) é a de menor log-verossimilhança negativa nos folds do Pará. Classes equiprováveis no treino tornam as saídas proporcionais às verossimilhanças que o CMAP recebe.</p>
-          <p><strong>Por que uma rede rasa?</strong> É o modelo mínimo que aprende filtros espaciais; redes leves aplicadas a patches já foram usadas no mapeamento com Landsat (Song et al., 2019). Com a mesma janela de 5 × 5 pixels, a comparação com o RF com contexto isola uma única diferença: o contexto é aprendido pela rede ou resumido em média e desvio-padrão.</p>
+          <p>Cada classificador tem um único modelo para as duas datas de treino e todas as cenas, aplicado às seis imagens de Belterra. A probabilidade de cada pixel é a média dos cinco modelos da validação cruzada. A versão (bruta ou calibrada por temperatura; Guo et al., 2017) é a de menor log-verossimilhança negativa nos folds do Pará. Classes equiprováveis no treino tornam as saídas proporcionais às verossimilhanças que o CMAP recebe.</p>
+          <p><strong>Por que uma rede rasa?</strong> É o modelo mínimo que aprende filtros espaciais. Redes leves aplicadas a patches já foram usadas no mapeamento com Landsat (Song et al., 2019). Com a mesma janela de 5 × 5 pixels, a comparação com o RF com contexto isola uma única diferença: o contexto é aprendido pela rede ou resumido em média e desvio-padrão.</p>
         </div>
         <div>
           <h3 style="font-size:1rem;margin-bottom:4px">Validação cruzada no Pará</h3>
@@ -837,7 +838,7 @@ mtd{text-align:left;padding:2px .5em}
             <span class="rotulo">cena inteira · 22,5 × 36 km · 2005–2010</span>
           </div>
           <div class="cena4" id="cena4"></div>
-          <p class="legenda-fig">Em vermelho, pixels cuja trajetória data a data volta para Floresta; em cinza, pixels sem as seis datas. Os quadros A e B são os recortes do <a href="#explorar">explorador</a>. Com o CMAP, nenhum pixel tem trajetória inválida, em nenhum classificador.</p>
+          <p class="legenda-fig">Em vermelho, pixels cuja trajetória data a data volta para Floresta. Em cinza, pixels sem as seis datas. Os quadros A e B são os recortes do <a href="#explorar">explorador</a>. Com o CMAP, nenhum pixel tem trajetória inválida, em nenhum classificador.</p>
         </div>
       </div>
 
@@ -930,14 +931,14 @@ mtd{text-align:left;padding:2px .5em}
         <li><div><h3>O contexto espacial melhora as probabilidades de cada data</h3><p>Do RF ao RF com contexto e deste à CNN, a acurácia balanceada sobe e as trajetórias inválidas caem (de 40,4% para 23,8% e 9,7%). Com a mesma janela, o contexto aprendido pela CNN superou o contexto resumido do RF, com intervalos de 95% acima de zero.</p></div></li>
         <li><div><h3>A CNN fornece as melhores probabilidades para o CMAP (será?)</h3><p> Melhores mapas de probabilidade data a data geram, consequentemente, melhores resultados no CMAP. Nesse estudo a CNN, mesmo rasa, produziu melhores resultados probabilisticos. </p></div></li>
         <li><div><h3>O CMAP separa melhor a Floresta da Vegetação Secundária</h3><p>Zero trajetórias inválidas, maior acurácia do produtor da VS em todos os classificadores e menos mudanças falsas entre 2008 e 2010. </p></div></li>
-        <li><div><h3>A confiança da trajetória indica onde confiar no mapa</h3><p>Com a CNN, os pixels com confiança ≥ 0,9 (13,5% do total) acertam 99,8% das duas datas de referência; metade dos erros está nos 20% menos confiáveis.</p></div></li>
+        <li><div><h3>A confiança da trajetória indica onde confiar no mapa</h3><p>Com a CNN, os pixels com confiança ≥ 0,9 (13,5% do total) acertam 99,8% das duas datas de referência. Metade dos erros está nos 20% menos confiáveis.</p></div></li>
       </ol>
       <div class="lim">
         <div class="painel"><h3>Limitações</h3><ul>
           <li>Classificar uma trajetória válida não significa classificá-la corretamente: o CMAP escolhe a trajetória válida mais provável segundo as probabilidades que recebe (veja o exemplo do RF na seção 03).</li>
           <li>A Vegetação Secundária é superestimada: a CNN atribui VS a 16% a 19% da área em 2008 e 2010, contra 10% a 11% no TerraClass.</li>
           <li>Com a matriz simplificada, um erro de VS tende a se propagar para os anos seguintes, o que cria uma perda de Floresta ao longo da série.</li>
-          <li>A referência também tem erros: a exatidão publicada do mapa TerraClass 2008 original é de 76,6% com 12 classes (Almeida et al., 2016); não foi encontrada avaliação oficial para os mapas usados.</li>
+          <li>A referência também tem erros: a exatidão publicada do mapa TerraClass 2008 original é de 76,6% com 12 classes (Almeida et al., 2016). </li>
         </ul></div>
         <div class="painel"><h3>Próximos passos</h3><ul>
           <li>Matriz de transição discriminativa de Reis et al. (2020), adaptada às quatro classes.</li>
@@ -984,7 +985,7 @@ mtd{text-align:left;padding:2px .5em}
     </div>
     <div>
       <p>Dados: Landsat 5 TM Collection 2, nível 2 (USGS); TerraClass Amazônia 2008 e 2010 (INPE e Embrapa). Imagens em falsa-cor (R: B5, G: B4, B: B3), com o mesmo realce nas seis datas.</p>
-      <p>Esta página e a documentação de todos os códigos foram confeccionadas com apoio de um assistente de IA (Claude - Opus 5.5, da Anthropic); métodos, resultados e conclusões são de responsabilidade do autor.</p>
+      <p>Esta página e a documentação de todos os códigos foram confeccionadas com apoio de um assistente de IA (Claude - Opus 5.5, da Anthropic). Métodos, resultados e conclusões são de responsabilidade do autor.</p>
     </div>
   </div>
 </footer>
